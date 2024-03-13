@@ -3,11 +3,14 @@ import sys
 import matplotlib.pyplot as plt
 from matplotlib import cm
 import re
+import os
 
-filenames = [i.split("\\")[-1] for i in sys.argv[1:-1]]
+#filenames = [i.split("\\")[-1] for i in sys.argv[1:-1]]
+filenames = sys.argv[1:-1]
+
 no_atoms = int(sys.argv[-1])
 
-path = [i.split("\\")[:-1] for i in sys.argv[1]]
+path =  os.path.dirname(sys.argv[1])
 
 def get_ADPs(file, no_atoms, *args, **kwargs):
     with open(file) as ofile:
@@ -88,7 +91,6 @@ def all_files(file_list, func,  *args, **kwargs):
     return rv
 
 def get_temp(file_list):
-    print(file_list)
     temp = []
     for f in file_list:
         t = re.findall('.*_(\d+)K_.*', f)
@@ -135,7 +137,7 @@ for atom, value in all_files(filenames, get_ADPs, no_atoms).items():
     axp.set_ylabel('$U_{eq}$ [Å$^2$]')  
 
     i+=1
-fig.savefig(r'{}\fig_adp.png'.format(path),dpi=200,bbox_inches = "tight")
+fig.savefig(path + r'\fig_adp.png' ,dpi=200,bbox_inches = "tight")
 
 
 
@@ -156,7 +158,7 @@ for atom, value in all_files(filenames, get_occupancy, no_atoms).items():
     axp.set_xlabel('Temperature [K]')  
     axp.set_ylabel('Occupancy [frac.]')  
     i+=1
-fig.savefig(r'{}\fig_occ.png'.format(path),dpi=200,bbox_inches = "tight")
+fig.savefig(path + r'\fig_occ.png',dpi=200,bbox_inches = "tight")
 
 
 
@@ -176,7 +178,6 @@ for key, value in all_files(filenames, get_cell).items():
     m, b = p
     merr = np.sqrt(cov[0][0])
     berr = np.sqrt(cov[1][1])
-    print(m,merr,b,berr)
 
     axp.errorbar(T, value[0], yerr=value[1], fmt='o-',c=cmap[i], mec='k', capsize=2,  label=r'$\Delta${}% = {:.4f}({:.0f}) $\times$ T - {:.2f}({:.0f})'.format(key, m, merr*10**4, abs(b), berr*10**2))
     
@@ -188,7 +189,8 @@ for key, value in all_files(filenames, get_cell).items():
     if key == 'volume':
         axp.set_ylabel('Unit cell volume [Å$^3$]') 
     i+=1
-fig.savefig(r'{}\fig_cell.png'.format(path),dpi=200,bbox_inches = "tight")
+#savename = os.path.join(path,'fig_cell.png')
+fig.savefig(path + r'\fig_cell.png',dpi=200,bbox_inches = "tight")
 
 
 
