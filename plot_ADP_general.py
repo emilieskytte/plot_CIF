@@ -7,7 +7,7 @@ import re
 filenames = [i.split("\\")[-1] for i in sys.argv[1:-1]]
 no_atoms = int(sys.argv[-1])
 
-
+path = [i.split("\\")[:-1] for i in sys.argv[1]]
 
 def get_ADPs(file, no_atoms, *args, **kwargs):
     with open(file) as ofile:
@@ -135,7 +135,7 @@ for atom, value in all_files(filenames, get_ADPs, no_atoms).items():
     axp.set_ylabel('$U_{eq}$ [Å$^2$]')  
 
     i+=1
-fig.savefig(r'fig_adp.png',dpi=200,bbox_inches = "tight")
+fig.savefig(r'{}\fig_adp.png'.format(path),dpi=200,bbox_inches = "tight")
 
 
 
@@ -156,7 +156,7 @@ for atom, value in all_files(filenames, get_occupancy, no_atoms).items():
     axp.set_xlabel('Temperature [K]')  
     axp.set_ylabel('Occupancy [frac.]')  
     i+=1
-fig.savefig(r'fig_occ.png',dpi=200,bbox_inches = "tight")
+fig.savefig(r'{}\fig_occ.png'.format(path),dpi=200,bbox_inches = "tight")
 
 
 
@@ -188,7 +188,7 @@ for key, value in all_files(filenames, get_cell).items():
     if key == 'volume':
         axp.set_ylabel('Unit cell volume [Å$^3$]') 
     i+=1
-fig.savefig(r'fig_cell.png',dpi=200,bbox_inches = "tight")
+fig.savefig(r'{}\fig_cell.png'.format(path),dpi=200,bbox_inches = "tight")
 
 
 
