@@ -24,7 +24,7 @@ def get_ADPs(file, no_atoms, *args, **kwargs):
     ADPs = {}
     for a in ip:
         atoms = a.split()[0]
-        adp_picker = re.findall('(\d+.\d+).\((\d+)\)', a)[0:3]
+        adp_picker = re.findall('(\d+.\d+)\((\d+)\)', a)[0:3]
         ADPs[atoms] =  [(float(adp_picker[i][0]), float(adp_picker[i][1])*10**-len(adp_picker[i][0].split('.')[1])) for i in range(0,3)]
         
     
@@ -46,7 +46,7 @@ def get_occupancy(file, no_atoms, *args, **kwargs):
 
     occ = {}
     for a in zip(atom, occ_str):
-        occ_float = re.findall('(\d+.\d+).(\d+)', a[1])
+        occ_float = re.findall('(\d+.\d+)(\d+)', a[1])
       
         if len(occ_float) == 0:
             continue  
